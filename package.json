@@ -6,7 +6,12 @@
 		"mongodb": "^2.2.31",
 		"express": "*",
 		"ejs": "*",
+<<<<<<< HEAD
 		"express-session": "*"
+=======
+		"cookie-session": "*",
+		"body-parser": "*"
+>>>>>>> fac27c3932493456b311fc22594db693edbb7702
 	},
 	"scripts": {
 		"start": "node server.js"

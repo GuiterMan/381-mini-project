@@ -3,17 +3,59 @@ var url  = require('url');
 var MongoClient = require('mongodb').MongoClient; 
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
+var session = require('cookie-session');
+var bodyP = require('body-parser');
 const mongourl = 'mongodb://Samuel:Killer000@ds251362.mlab.com:51362/guiterman';
+
+
 
 var express = require('express');
 var app = express();
+
+app.use(bodyP.json());
+app.use(bodyP.urlencoded({
+	extended: true
+}));
+app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
-	
-app.get("/", function(req,res) {
+
+var users = new Array(
+	{name: 'developer', password: 'developer'},
+	{name: 'guest', password: 'guest'}
+);
+
+app.use(session({
+  name: 'session',
+  keys: ["ggg","fff"]
+}));
+
+app.get('/login',function(req,res) {
+	res.render('loginForm', {});
+});
+app.post('/login',function(req,res) {
+	req.session.authenticated = false;
 	console.log('Incoming request: %s', req.path);
-	res.render('loginForm', {});	
+	console.log(req.seeison);
+	for (var i=0; i<users.length; i++) {
+		if (users[i].name == req.body.name &&
+			users[i].password == req.body.password) {
+				req.session.authenticated = true;
+				req.session.username = users[i].name;
+				console.log("authenticated user: " + users[i].name);
+		}
+	}
+	if(req.session.authenticated){
+		res.redirect('/index');
+	}else{
+		res.send("No Such User.");
+	}
 }); // login
 
+app.get('/logout',function(req,res) {
+	req.session = null;
+	res.redirect('/');
+}); // logout
 
 app.get('/index', function(req, res) {
 	console.log('Incoming request: %s', req.path);
