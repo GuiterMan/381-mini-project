@@ -1,0 +1,31 @@
+<HTML><BODY>
+	<head>
+		<title>Restaurant</title>
+		<h1>Restaurants</h1>
+		<h2>Showing <%=r.length%> documents</h2>
+	</head>
+	
+	<% if (r.length > 0) { %>
+	
+	<table>
+		<tr><th>Name</th></tr>
+		<% for (var i = 0; i < r.length; i++) { %>
+			<tr>
+				<td><a href=/display?_id=<%= r[i]._id %>><%= r[i].name %></a></td>	
+			</tr>
+		<% } %>
+	</table>
+	
+	<% } else { %>
+		<h1>Nothing to Show!</h1>
+	<% } %>
+
+<form action="/create">
+    <input type="submit" value="Create"/>
+</form>
+<form action="/search">
+    <input type="submit" value="search"/>
+</form>
+
+</BODY></HTML>
+

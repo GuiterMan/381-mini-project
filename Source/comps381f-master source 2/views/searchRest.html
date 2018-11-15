@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Search Restaurant</title>
+</head>
+
+<body>
+<H1 align="center">
+<h1>Search Restaurant</h1><br/>
+<form action='/searchRest', method ="GET">
+<table border = "1" cellpadding ="5">
+<tr>
+	<th>Name:</th>
+	<td><input type="text" name="name"></td>
+</tr>
+<tr>
+	<th rowspan="3">Address:</td>
+	<td>Street: &nbsp;<input type="text" name="street"></td>
+</tr>
+<tr>
+	<td>Zipcode: &nbsp;<input type="text" name="zipcode"></td>
+</tr>
+<tr>
+	<td>Building: &nbsp;<input type="text" name="building"></td>
+</tr>
+
+<tr>
+	<th>Borough:</th>
+	<td><input type="text" name="borough"></td>
+</tr>
+<tr>
+	<th>Cuisine:</th>
+	<td><input type="text" name="cuisine"></td>
+</tr>
+
+<tr>
+	<td colspan="2" ><input type="submit" value="submit"></td>
+</tr>
+
+</table>
+</form>
+
+<a href="/">Back</a>
+<a href="/showAll">Show All Data</a>
+</body>
+</html>

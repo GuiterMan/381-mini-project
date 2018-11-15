@@ -1,0 +1,38 @@
+<html><title><%= r.name %></title>
+
+<body>
+	<form id='details' method='GET' action='/edit'>
+		<input type="hidden" name="_id" value=<%= r._id %>><br>
+		Name: <input type="text" name="name" value=<%= r.name %> readonly><br>
+		Borough: <input type="text" name="borough" value=<%= r.borough %> readonly><br>
+		Cuisine: <input type="text" name="cuisine" value=<%= r.cuisine %> readonly><br>
+		Address:<br>
+		<input type="text" name="building" value=<%= r.address.building %> readonly>
+		,
+		<input type="text" name="street" value=<%= r.address.street %> readonly><br>
+		Zipcode: <input type="text" name="street" value=<%= r.address.zipcode %> readonly><br>
+		Coord: <input type="text" name="street" value=<%= r.address.coord %> readonly><br>
+		<% if (r.length > 0) { %>
+	
+		<table>
+			<tr><th>Name</th></tr>
+			<% for (var i = 0; i < r.length; i++) { %>
+				<tr>
+					<td><a href=/display?_id=<%= r.grades[i]._id %>><%= r[i].name %></a></td>	
+				</tr>
+			<% } %>
+		</table>
+		
+		<% } else { %>
+			<h1>Nothing to Show!</h1>
+		<% } %>
+		
+	</form>
+<script>
+	function goBack() {window.history.back();}
+</script>
+<button type="submit" form="details" value="Edit">Edit</button>
+<button onclick="goBack()">Go Back</button>
+
+</body>
+</html>

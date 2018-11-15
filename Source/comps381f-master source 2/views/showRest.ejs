@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>View Restaurant</title>
+</head>
+<body>
+
+<br>
+<table border="1" cellpadding="5" cellspacing="5" align="center"">
+<caption>Restaurant list</caption>
+	<tr>
+		<th>Name</th>
+		<th>Street</th>
+		<th>Zipcode</th>
+		<th>Building</th>
+		<th>Borough</th>
+		<th>Cuisine</th>
+	</tr>
+	<% for (var i=0; i<rests.length; i++) { %>
+	  <tr>
+       <td><%= rests[i].name %></td>
+       <td><%= rests[i].address.street %></td>
+	   <td><%= rests[i].address.zipcode %></td>
+	   <td><%= rests[i].address.building %></td>
+	   <td><%= rests[i].borough %></td>
+	   <td><%= rests[i].cuisine %></td>
+      </tr>
+	<% } %>
+</table>
+<p style="text-align:center">
+<p align="center">
+<a href="/">Back</a>
+</p>
+</body>
+</html>
