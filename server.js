@@ -20,15 +20,19 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 
-var users = new Array(
-	{name: 'developer', password: 'developer'},
-	{name: 'guest', password: 'guest'}
-);
+var users;
+var loginedUser;
 
 app.use(session({
   name: 'session',
   keys: ["ggg","fff"]
 }));
+
+app.get('/loginpre',function(req,res) {
+	userAccount(res);
+	console.log("User get");
+	res.redirect('/login');
+});
 
 app.get('/login',function(req,res) {
 	res.render('loginForm', {});
@@ -36,13 +40,14 @@ app.get('/login',function(req,res) {
 app.post('/login',function(req,res) {
 	req.session.authenticated = false;
 	console.log('Incoming request: %s', req.path);
-	console.log(req.seeison);
+	console.log(users);
 	for (var i=0; i<users.length; i++) {
 		if (users[i].name == req.body.name &&
 			users[i].password == req.body.password) {
 				req.session.authenticated = true;
 				req.session.username = users[i].name;
 				console.log("authenticated user: " + users[i].name);
+				loginedUser = users[i].name;
 		}
 	}
 	if(req.session.authenticated){
@@ -54,7 +59,7 @@ app.post('/login',function(req,res) {
 
 app.get('/logout',function(req,res) {
 	req.session = null;
-	res.redirect('/');
+	res.redirect('/login');
 }); // logout
 
 app.get('/index', function(req, res) {
@@ -76,7 +81,7 @@ app.get('/create', function(req, res) {
 	
 	console.log('Incoming request: %s', req.path);
 	res.render('createRestaurantForm', {});
-	if (req.query.restaurant_id != "" && req.query.owner != "") {
+	if (req.query.restaurant_id != "" && req.query.restaurant_id != null) {
 	
 		console.log("Data Recived");
 		create(res,req.query);
@@ -84,6 +89,30 @@ app.get('/create', function(req, res) {
 	
 }); // Create Restaurant Form
 
+function userAccount(res) {
+	MongoClient.connect(mongourl, function(err, db) {
+		assert.equal(err,null);
+		console.log('Connected to MongoDB\n');
+		findUser(db,function(user) {
+			db.close();
+			console.log('Disconnected MongoDB\n');
+			users = user;
+		}); 
+	});
+} //Get User account data
+
+function findUser(db,callback) {
+	var user = [];
+	cursor = db.collection('user').find(); 		
+	cursor.each(function(err, doc) {
+		assert.equal(err, null); 
+		if (doc != null) {
+			user.push(doc);
+		} else {
+			callback(user); 
+		}
+	});
+} //Find user db for Get User
 
 function read_n_print(res,criteria,max) {
 	MongoClient.connect(mongourl, function(err, db) {
@@ -145,6 +174,8 @@ function create(res,queryAsObject) {
 		if (queryAsObject.street != "") address['street'] = queryAsObject.street;
 		new_r['address'] = address;
 	}
+	new_r['owner'] = loginedUser;
+	console.log("Owner:" + loginedUser);
 	console.log('About to insert: ' + JSON.stringify(new_r));
 
 	MongoClient.connect(mongourl,function(err,db) {
