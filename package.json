@@ -4,8 +4,9 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"mongodb": "^2.2.31",
-		"express" : "*",
-		"ejs" : "*"
+		"express": "*",
+		"ejs": "*",
+		"express-session": "*"
 	},
 	"scripts": {
 		"start": "node server.js"
@@ -14,7 +15,3 @@
 		"node": ">= 6.0.0"
 	}
 }
-
-
-
-
