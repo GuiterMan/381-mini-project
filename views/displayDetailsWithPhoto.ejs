@@ -1,6 +1,9 @@
+
+
 <html><title><%= r.name %></title>
 
 <body>
+	<img src= 'data: <%= r.mimetype %>;base64, <%= r.image%>'>
 	<form id='details' method='GET' action='/edit'>
 		<input type="hidden" name="_id" value=<%= r._id %>><br>
 		Name: <input type="text" name="name" value=<%= r.name %> readonly><br>
