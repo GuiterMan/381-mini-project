@@ -1,7 +1,8 @@
-<html><title>Create Restaruant Form</title>
+<html><title>Update Restaruant Form</title>
 
 <body>
-	<form id='details' method='POST' action='/create' enctype="multipart/form-data">
+	<h3>Update Form</h3>
+	<form id='details' method='POST' action='/update' enctype="multipart/form-data">
 		Restaurant_id: <input type="text" name="restaurant_id"><br> 		
 		Name: <input type="text" name="name"><br>
 		Borough: <input type="text" name="borough"><br>
@@ -18,12 +19,13 @@
 		User: <input type="text" name="user"><br>
 		score: <input type="text" name="score"><br>
 		
-		<input type="submit" value="Create"/>
+		<input type="submit" value="Update"/>
 	</form>
 <script>
 	function goBack() {window.history.back();}
 </script>
 <button onclick="goBack()">Go Back</button>
+
 
 </body>
 </html>

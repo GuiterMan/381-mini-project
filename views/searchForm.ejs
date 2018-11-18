@@ -1,14 +1,11 @@
-<html><title>Create Restaruant Form</title>
+<html>
 
 <body>
-	<form id='details' method='POST' action='/create' enctype="multipart/form-data">
+    <form action='/search' method='POST'enctype="multipart/form-data">
 		Restaurant_id: <input type="text" name="restaurant_id"><br> 		
 		Name: <input type="text" name="name"><br>
 		Borough: <input type="text" name="borough"><br>
-		Cuisine: <input type="text" name="cuisine"><br>
-
-		Photo upload: <input type="file" name="filetoupload"><br>
-		
+		Cuisine: <input type="text" name="cuisine"><br>		
 		Address:<br>
 		Building: <input type="text" name="building"><br>
 		Street: <input type="text" name="street"><br>
@@ -18,7 +15,7 @@
 		User: <input type="text" name="user"><br>
 		score: <input type="text" name="score"><br>
 		
-		<input type="submit" value="Create"/>
+		<input type="submit" value="Search"/>
 	</form>
 <script>
 	function goBack() {window.history.back();}
