@@ -355,6 +355,7 @@ function create(res,queryAsObject,req) {
 	
 	    var form = new formidable.IncomingForm();
 	    form.parse(req, function (err, fields, files) {
+	      console.log(fields);
 	      console.log(JSON.stringify(files));
 	      if (files.filetoupload.size == 0) {
 	        console.log("No file uploaded!");  
@@ -365,13 +366,13 @@ function create(res,queryAsObject,req) {
 	        var mimetype = files.filetoupload.type;
 	      }
 	      if (fields.restaurant_id) {new_r.restaruant_id = fields.restaurant_id}
-	      	else {new_r.restaruant_id = ""}
+	      	else {new_r.restaruant_id = "N/A"}
 		  if (fields.name) {new_r.name = fields.name}
-		  	else {new_r.name = ""}
+		  	else {new_r.name = "N/A"}
 		  if (fields.borough) {new_r.borough = fields.borough}
-			else {new_r.borough = ""}
+			else {new_r.borough = "N/A"}
 		  if (fields.cuisine) {new_r.cuisine = fields.cuisine}
-			else {new_r.cuisine = ""}
+			else {new_r.cuisine = "N/A"}
 
 	      fs.readFile(filename, function(err,data) {
 	          new_r.mimetype = mimetype;
@@ -380,15 +381,15 @@ function create(res,queryAsObject,req) {
 
 	      	var address = {};
 	        if (fields.building) {address.building = fields.building}
-	        	else {address.building = ""}
+	        	else {address.building = "N/A"}
 	        if (fields.street) {address.street = fields.street}
-	        	else {address.street = ""}
+	        	else {address.street = "N/A"}
 	        if (fields.zipcode) {address.zipcode = fields.zipcode}
-	    		else {address.zipcode = ""}
-	    	var coord = []
-	        if (fields.coordx){coord.push(coordx)} else {coord.push(0)} 
+	    		else {address.zipcode = "N/A"}
+	    	var coord = [];
+	        if (fields.coordx){coord.push(fields.coordx)} else {coord.push("N/A")} 
 
-	        if (fields.coordy){coord.push(coordx)} else {coord.push(0)} 
+	        if (fields.coordy){coord.push(fields.coordy)} else {coord.push("N/A")} 
 	        address['coord'] = coord; 	
 	        new_r['address'] = address;
 
