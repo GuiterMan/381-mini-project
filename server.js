@@ -9,6 +9,7 @@ var session = require('cookie-session');
 var bodyP = require('body-parser');
 const mongourl = 'mongodb://Samuel:Killer000@ds251362.mlab.com:51362/guiterman';
 var express = require('express');
+var apiRouter = require('./apiRouter.js')
 var app = express();
 
 app.use(bodyP.json());
@@ -29,7 +30,7 @@ app.use(session({
   name: 'session',
   keys: ["ggg","fff"]
 }));
-
+app.use('/api',apiRouter);
 app.get('/loginpre',function(req,res) {
 	userAccount(res);
 	console.log("User get");
