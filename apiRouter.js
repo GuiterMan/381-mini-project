@@ -10,14 +10,14 @@ Method: POST
 Params: {JSON} Restaurant object
 Return: {JSON} returning status and object id for successful insert
 */
-router.post('/restaurant', function (req, res) {
+router.post('/restaurant/create', function (req, res) {
     var insertData = req.body;
     var msg = {};
     MongoClient.connect(mongourl, function (err, db) {
         if (err) throw err;
         console.log('Connected to MongoDB\n');
         console.log(insertData);
-        if(insertData.hasOwnProperty("name") && insertData.hasOwnProperty("owner")){
+        if (insertData.hasOwnProperty("name") && insertData.hasOwnProperty("owner")) {
             db.collection('restaurant').insertOne(insertData, function (err, result) {
                 if (err) throw err;
                 if (result) {
@@ -32,7 +32,7 @@ router.post('/restaurant', function (req, res) {
                 res.end(JSON.stringify(msg));
                 db.close();
             });
-        }else{
+        } else {
             msg.status = "failed";
             res.writeHead(200, {
                 "Content-Type": "application/json"
@@ -41,49 +41,58 @@ router.post('/restaurant', function (req, res) {
         }
     });
 });
-
 /*
-Description: Restful Api function for getting Restaurant by Name, borough and cuisine
+Description: Restful Api function for getting Restaurant by Name, borough or cuisine
 Method: Get
-Params: {String} name,
-        {String} borough,
-        {String} cuisine
+Params: {String} key (name | borough | cuisine),
+        {String} value
 Return: {JSON} Restaurant Array/Object 
 */
-router.get('/restaurant/:name/:borough/:cuisine', function (req, res) {
-    var criteria = {
-        "name": req.params.name,
-        "borough": req.params.borough,
-        "cuisine": req.params.cuisine
-    };
-    getRestaurantByNBC(criteria,function(result){
-        res.writeHead(200, {
+
+router.get('/restaurant/read/:key/:value', function (req, res) {
+    var key = req.params.key;
+    var keys = ["name", "borough", "cuisine"];
+    if (!keys.includes(key)) {
+        res.writeHead(404, {
             "Content-Type": "application/json"
         });
-        if(result.length!=0){
-            res.end(JSON.stringify(result));
-        }else{
-            res.end(JSON.stringify({}));
-        }
-    })
+        res.end(JSON.stringify({
+            "Error": "Incorrect key"
+        }));
+    } else {
+        var criteria = {
+            [key]: req.params.value
+        };
+        read(criteria, function (result,db) {
+            res.writeHead(200, {
+                "Content-Type": "application/json"
+            });
+            if (result.length != 0) {
+                res.end(JSON.stringify(result));
+            } else {
+                res.end(JSON.stringify({}));
+            }
+            db.close();
+            console.log("DB Close");
+        });
+    }
 });
 
 /*
 Description: Sync. function for getting Restaurant by Name, borough and cuisine from mongoDB for get request
 */
-function getRestaurantByNBC(criteria,callback){
+function read(criteria, callback) {
     MongoClient.connect(mongourl, function (err, db) {
         if (err) throw err;
         console.log('Connected to MongoDB\n');
         var resultArray = [];
-        db.collection('restaurant').find(criteria).each(function (err, result){
+        db.collection('restaurant').find(criteria).each(function (err, result) {
             if (err) throw err;
-            if(result!=null){
+            if (result != null) {
                 resultArray.push(result);
-            }else{
-                callback(resultArray);
+            } else {
+                callback(resultArray,db);
             }
-            db.close();
         });
     });
 }
