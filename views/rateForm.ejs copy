@@ -1,0 +1,18 @@
+<html><title>Rate Restaruant Form</title>
+
+<body>
+	<h3>Update Form</h3>
+	<form id='details' method='POST' action='/rate' enctype="multipart/form-data">
+		
+		score(0 - 10) : <input type="text" name="score"><br>
+		
+		<input type="submit" value="Rate"/>
+	</form>
+<script>
+	function goBack() {window.history.back();}
+</script>
+<button onclick="goBack()">Go Back</button>
+
+
+</body>
+</html>
