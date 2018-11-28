@@ -9,7 +9,8 @@ var session = require('cookie-session');
 var bodyP = require('body-parser');
 const mongourl = 'mongodb://Samuel:Killer000@ds251362.mlab.com:51362/guiterman';
 var express = require('express');
-var apiRouter = require('./apiRouter.js')
+var apiRouter = require('./router/apiRouter.js');
+var userRouter = require('./router/userRouter.js');
 var app = express();
 
 app.use(bodyP.json());
@@ -31,39 +32,9 @@ app.use(session({
   keys: ["ggg","fff"]
 }));
 app.use('/api',apiRouter);
-app.get('/loginpre',function(req,res) {
-	userAccount(res);
-	console.log("User get");
-	res.redirect('/login');
-});
+app.use(userRouter);
 
-app.get('/login',function(req,res) {
-	res.render('loginForm', {});
-});
-app.post('/login',function(req,res) {
-	req.session.authenticated = false;
-	console.log('Incoming request: %s', req.path);
-	console.log(users);
-	for (var i=0; i<users.length; i++) {
-		if (users[i].name == req.body.name &&
-			users[i].password == req.body.password) {
-				req.session.authenticated = true;
-				req.session.username = users[i].name;
-				console.log("authenticated user: " + users[i].name);
-				loginedUser = users[i].name;
-		}
-	}
-	if(req.session.authenticated){
-		res.redirect('/index');
-	}else{
-		res.send("No Such User.");
-	}
-}); // login
 
-app.get('/logout',function(req,res) {
-	req.session = null;
-	res.redirect('/login');
-}); // logout
 
 app.get('/index', function(req, res) {
 	console.log('Incoming request: %s', req.path);
@@ -259,32 +230,6 @@ app.post('/rate', function(req, res) {
 */
 }); // Rate Function
 
-
-
-function userAccount(res) {
-	MongoClient.connect(mongourl, function(err, db) {
-		assert.equal(err,null);
-		console.log('Connected to MongoDB\n');
-		findUser(db,function(user) {
-			db.close();
-			console.log('Disconnected MongoDB\n');
-			users = user;
-		}); 
-	});
-} //Get User account data
-
-function findUser(db,callback) {
-	var user = [];
-	cursor = db.collection('user').find(); 		
-	cursor.each(function(err, doc) {
-		assert.equal(err, null); 
-		if (doc != null) {
-			user.push(doc);
-		} else {
-			callback(user); 
-		}
-	});
-} //Find user db for Get User
 
 function read_n_print(res,criteria,max) {
 	MongoClient.connect(mongourl, function(err, db) {

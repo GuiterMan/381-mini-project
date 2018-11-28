@@ -1,12 +1,17 @@
 <html>
-    <head>
-	<title>Login Form</title>
-    </head>
-    <body>
-        <form action="http://localhost:8099/login" method="post">
-		Your Name: <input type="text" name="name"><br>
-		Your Password: <input type="text" name="password"><br>
-		<input type="submit" value="Submit">
-	</form>
-    </body>
+
+<head>
+    <title>Login Form</title>
+</head>
+
+<body>
+    <h1>Login Form</h1>
+    <form action="http://localhost:8099/login" method="post">
+        Your Userid: <input type="text" name="userid"><br>
+        Your Password: <input type="password" name="password"><br>
+        <input type="submit" value="Login">
+        <input type="button" onclick="location.href='/register';" value="Go to register" />
+    </form>
+</body>
+
 </html>
