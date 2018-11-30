@@ -2,7 +2,9 @@
 
 <body>
 	<h3>Update Form</h3>
-	<form id='details' method='POST' action='/update' enctype="multipart/form-data">
+	<form method='POST' action='/update' enctype="multipart/form-data">
+		<input type="hidden" name="_id" value="<%=_id%>">
+		<input type="hidden" name="owner" value="<%=owner%>">
 		Restaurant_id: <input type="text" name="restaurant_id"><br> 		
 		Name: <input type="text" name="name"><br>
 		Borough: <input type="text" name="borough"><br>

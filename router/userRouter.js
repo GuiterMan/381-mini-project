@@ -6,18 +6,20 @@ const mongourl = 'mongodb://Samuel:Killer000@ds251362.mlab.com:51362/guiterman';
 
 
 router.get('/login', function (req, res) {
-    res.render('loginForm', {});
+    if(req.session.userid==null){
+        res.render('loginForm', {});
+    }else{
+        res.redirect('/index');
+    }
 });
 
 router.post('/login', function (req, res) {
-    req.session.authenticated = false;
     findOneUser({
         userid: req.body.userid,
         password: req.body.password
     }, function (result, db) {
         if (result) {
-            req.session.authenticated = true;
-            req.session.username = result.userid;
+            req.session.userid = result.userid;
             res.redirect('/index');
         } else {
             res.end("No Such User.");
@@ -28,7 +30,11 @@ router.post('/login', function (req, res) {
 }); // login
 
 router.get('/register', function (req, res) {
-    res.render('register');
+    if(req.session.userid==null){
+        res.render('register');
+    }else{
+        res.redirect('/index');
+    }
 });
 
 router.post('/register', function (req, res) {

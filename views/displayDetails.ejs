@@ -3,15 +3,15 @@
 <body>
 	<form id='details' method='GET' action='/edit'>
 		<input type="hidden" name="_id" value=<%= r._id %>><br>
-		Name: <input type="text" name="name" value=<%= r.name %> readonly><br>
-		Borough: <input type="text" name="borough" value=<%= r.borough %> readonly><br>
-		Cuisine: <input type="text" name="cuisine" value=<%= r.cuisine %> readonly><br>
+		Name: <input type="text" name="name" value=<%= r.name %>><br>
+		Borough: <input type="text" name="borough" value=<%= r.borough %>><br>
+		Cuisine: <input type="text" name="cuisine" value=<%= r.cuisine %>><br>
 		Address:<br>
-		<input type="text" name="building" value=<%= r.address.building %> readonly>
+		<input type="text" name="building" value=<%= r.address.building %>> 
 		,
-		<input type="text" name="street" value=<%= r.address.street %> readonly><br>
-		Zipcode: <input type="text" name="street" value=<%= r.address.zipcode %> readonly><br>
-		Coord: <input type="text" name="street" value=<%= r.address.coord %> readonly><br>
+		<input type="text" name="street" value=<%= r.address.street %>><br>
+		Zipcode: <input type="text" name="street" value=<%= r.address.zipcode %>y><br>
+		Coord: <input type="text" name="street" value=<%= r.address.coord %> ><br>
 		<% if (r.grades.length > 0) { %>
 	
 		<table>
@@ -41,6 +41,8 @@
 <button onclick="goBack()">Go Back</button>
 
 <form action="/update">
+	<input type="hidden" name="_id" value="<%=r._id%>">
+	<input type="hidden" name="owner" value="<%=r.owner%>">
     <input type="submit" value="update"/>
 </form>
 <form action="/delete">
