@@ -28,8 +28,6 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 
-var loginedUser;
-var displayid = "";
 
 app.use(session({
 	name: 'session',
@@ -65,39 +63,6 @@ app.get('/index', function (req, res) {
 }); // index
 
 
-function read_n_print(res, criteria, max) {
-	MongoClient.connect(mongourl, function (err, db) {
-		assert.equal(err, null);
-		console.log('Connected to MongoDB\n');
-		findRestaurants(db, criteria, max, function (restaurants) {
-			db.close();
-			console.log('Disconnected MongoDB\n');
-			res.render('index', {
-				r: restaurants
-			});
-			//return(restaurants);
-		});
-	});
-} //Print index
-
-
-function findRestaurants(db, criteria, max, callback) {
-	var restaurants = [];
-	if (max > 0) {
-		cursor = db.collection('restaurant').find(criteria).limit(max);
-	} else {
-		cursor = db.collection('restaurant').find(criteria);
-	}
-	cursor.each(function (err, doc) {
-		assert.equal(err, null);
-		if (doc != null) {
-			restaurants.push(doc);
-		} else {
-			callback(restaurants);
-		}
-	});
-} //Find restarurnt for read_n_print
-
 
 app.get('*', function (req, res) {
 	res.set({
@@ -106,4 +71,4 @@ app.get('*', function (req, res) {
 	res.status(404).end("404: " + req.path + " not implemented!");
 });
 
-app.listen(process.env.PORT || 8099);
+app.listen(process.env.PORT || 3000);
