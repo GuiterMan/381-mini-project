@@ -74,7 +74,7 @@ app.post('/search', function (req, res) {
 	form.parse(req, function (err, fields, files) {
 
 		if (fields.restaurant_id) {
-			new_r.restaruant_id = fields.restaurant_id;
+			new_r.restaurant_id = fields.restaurant_id;
 		}
 		if (fields.name) {
 			new_r.name = fields.name;
@@ -100,12 +100,6 @@ app.post('/search', function (req, res) {
 		if (fields.zipcode) {
 			new_r.zipcode = fields.zipcode;
 		}
-		if (fields.user) {
-			new_r.user = fields.user;
-		}
-		if (fields.score) {
-			new_r.score = fields.score;
-		}
 
 	});
 	criteria = new_r;
@@ -116,25 +110,27 @@ app.post('/search', function (req, res) {
 }); // Search Function
 
 
-app.get('/delete', function (req, res) {
+app.get('/delete', function (req, res,next) {
 	console.log('Incoming request: post %s', req.path);
 	console.log("pass successful");
-
+	console.log("req is:");
+	console.log(req.query._id);
 	var criteria = {};
 	var new_r = {}; // document to be inserted
 
 	new_r._id = displayid;
 	criteria = new_r;
 
+
 	//console.log('/search criteria = ' + JSON.stringify(new_r));
 	if (new_r['owner'] == loginedUser) {
-		remove(res, criteria);
+		remove(res, {_id: req.query._id});
 		res.redirect('/index');
 	} else {
 		//res.redirect('/notFound');
 		console.log("You are not owner!");
-		remove(res, criteria);
-		res.redirect('/index');
+		next();
+		res.redirect('/');
 	}
 
 }); // Delete Function

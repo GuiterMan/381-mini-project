@@ -1,6 +1,10 @@
 <html>
+<head>
+    <title>Search Form</title>
+</head>
 
 <body>
+	<h1>Search Form</h1>
     <form action='/search' method='POST'enctype="multipart/form-data">
 		Restaurant_id: <input type="text" name="restaurant_id"><br> 		
 		Name: <input type="text" name="name"><br>
@@ -11,10 +15,6 @@
 		Street: <input type="text" name="street"><br>
 		Zipcode: <input type="text" name="zipcode"><br>
 		Coord: <input type="text" name="coordx">, <input type="text" name="coordy"><br>
-		Grades:<br>
-		User: <input type="text" name="user"><br>
-		score: <input type="text" name="score"><br>
-		
 		<input type="submit" value="Search"/>
 	</form>
 <script>
