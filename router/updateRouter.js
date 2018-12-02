@@ -8,22 +8,30 @@ var fs = require('fs');
 var assert = require('assert');
 //Routing
 
-router.get('/update', function (req, res) {
-    if (req.query.owner != req.session.userid) {
+router.post('/updateForm', function (req, res) {
+    if (req.body.owner != req.session.userid) {
         res.render('blankPage', {
             title: "Permission denied",
             msg: "You are not the owner.<a href='/index'>Go Back</a>"
         });
     } else {
         res.render('updateRestaurantForm', {
-            _id: req.query._id,
-            owner: req.query.owner
+            _id: req.body._id,
+            owner: req.body.owner,
+            restaurant_id: req.body.restaurant_id,
+            name: req.body.name,
+            borough: req.body.borough,
+            cuisine: req.body.cuisine,
+            building: req.body.building,
+            street: req.body.street,
+            zipcode: req.body.zipcode,
+            coordx: req.body.coordx,
+            coordy: req.body.coordy
         });
     }
 }); // Update Restaurant Form
 
 router.post('/update', function (req, res) {
-
     var new_r = {}; // document to be inserted
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {

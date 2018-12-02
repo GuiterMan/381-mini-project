@@ -9,7 +9,7 @@ router.get('/login', function (req, res) {
     if(req.session.userid==null){
         res.render('loginForm', {});
     }else{
-        res.redirect('/index');
+        res.redirect('/');
     }
 });
 
@@ -20,7 +20,7 @@ router.post('/login', function (req, res) {
     }, function (result, db) {
         if (result) {
             req.session.userid = result.userid;
-            res.redirect('/index');
+            res.redirect('/');
         } else {
             res.end("No Such User.");
         }

@@ -1,33 +1,34 @@
-<html><title>Update Restaruant Form</title>
+<html>
+<title>Update Restaruant Form</title>
 
 <body>
 	<h3>Update Form</h3>
 	<form method='POST' action='/update' enctype="multipart/form-data">
 		<input type="hidden" name="_id" value="<%=_id%>">
 		<input type="hidden" name="owner" value="<%=owner%>">
-		Restaurant_id: <input type="text" name="restaurant_id"><br> 		
-		Name: <input type="text" name="name"><br>
-		Borough: <input type="text" name="borough"><br>
-		Cuisine: <input type="text" name="cuisine"><br>
+		Restaurant_id: <input type="text" name="restaurant_id" value="<%=restaurant_id%>"><br>
+		Name: <input type="text" name="name" value="<%=name%>"><br>
+		Borough: <input type="text" name="borough" value="<%=borough%>"><br>
+		Cuisine: <input type="text" name="cuisine" value="<%=cuisine%>"><br>
 
 		Photo upload: <input type="file" name="filetoupload"><br>
-		
+
 		Address:<br>
-		Building: <input type="text" name="building"><br>
-		Street: <input type="text" name="street"><br>
-		Zipcode: <input type="text" name="zipcode"><br>
-		Coord: <input type="text" name="coordx">, <input type="text" name="coordy"><br>
-		Grades:<br>
-		User: <input type="text" name="user"><br>
-		score: <input type="text" name="score"><br>
-		
-		<input type="submit" value="Update"/>
+		Building: <input type="text" name="building" value="<%=building%>"><br>
+		Street: <input type="text" name="street" value="<%=street%>"><br>
+		Zipcode: <input type="text" name="zipcode" value="<%=zipcode%>"><br>
+		Coord: <input type="text" name="coordx" value="<%=coordx%>">, <input type="text" name="coordy" value="<%=coordy%>"><br>
+
+		<input type="submit" value="Update" />
 	</form>
-<script>
-	function goBack() {window.history.back();}
-</script>
-<button onclick="goBack()">Go Back</button>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+	<button onclick="goBack()">Go Back</button>
 
 
 </body>
+
 </html>

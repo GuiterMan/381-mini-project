@@ -11,6 +11,8 @@ var apiRouter = require('./router/apiRouter.js');
 var userRouter = require('./router/userRouter.js');
 var createRouter = require('./router/createRouter.js');
 var updateRouter = require('./router/updateRouter.js');
+var displayRouter = require('./router/displayRouter.js');
+
 
 var app = express();
 
@@ -25,7 +27,6 @@ app.set('view engine', 'ejs');
 var loginedUser;
 var displayid = "";
 var rateuser = [];
-var updateRestOwner = "";
 
 app.use(session({
 	name: 'session',
@@ -45,20 +46,13 @@ app.use('/',function(req,res,next){
 
 app.use(createRouter);
 app.use(updateRouter);
+app.use(displayRouter);
 
-app.get('/index', function (req, res) {
+app.get('/', function (req, res) {
 	console.log("Login user: "+req.session.userid);
 	read_n_print(res, {}, 10);
 
 }); // index
-
-
-app.get('/display', function (req, res) {
-	console.log('Incoming request: %s', req.path);
-	displayid = req.query._id;
-	console.log("Finding id:" + displayid);
-	displayRestaurant(res, displayid);
-}); // displayfurtherdetails
 
 
 app.get('/search', function (req, res) {
@@ -225,45 +219,6 @@ function findRestaurants(db, criteria, max, callback) {
 		}
 	});
 } //Find restarurnt for read_n_print
-
-
-function displayRestaurant(res, id) {
-	MongoClient.connect(mongourl, function (err, db) {
-		assert.equal(err, null);
-		console.log('Connected to MongoDB\n');
-		db.collection('restaurant').
-		findOne({
-			_id: ObjectId(id)
-		}, function (err, doc) {
-			assert.equal(err, null);
-			db.close();
-			console.log('Disconnected from MongoDB\n');
-			console.log(doc.name);
-
-
-			if (doc.grades.length > 0) {
-				for (var i = 0; i < doc.grades.length; i++) {
-					if (doc.grades[i].user != "" && doc.grades[i].user != null) {
-						rateuser.push(doc.grades[i].user);
-					}
-				}
-			}
-
-			updateRestOwner = doc.owner;
-
-			if (doc.image != "" && doc.image != null) {
-				res.render('displayDetailsWithPhoto', {
-					r: doc
-				});
-			} else {
-
-				res.render('displayDetails', {
-					r: doc
-				});
-			}
-		});
-	});
-} //Display Restaruant details
 
 function remove(res, criteria) {
 	console.log('About to delete ' + JSON.stringify(criteria));

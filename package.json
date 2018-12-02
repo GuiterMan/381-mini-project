@@ -6,17 +6,9 @@
 		"mongodb": "^2.2.31",
 		"express": "*",
 		"ejs": "*",
-<<<<<<< HEAD
-		"express-session": "*"
-=======
 		"cookie-session": "*",
-<<<<<<< HEAD
-		"body-parser": "*"
->>>>>>> fac27c3932493456b311fc22594db693edbb7702
-=======
 		"body-parser": "*",
 		"formidable": "latest"
->>>>>>> d3d0e4354046d4ff87f7eed0a7c3ab5419b002a3
 	},
 	"scripts": {
 		"start": "node server.js"

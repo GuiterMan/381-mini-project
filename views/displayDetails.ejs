@@ -1,57 +1,88 @@
-<html><title><%= r.name %></title>
+<html>
+<title>
+	<%= r.name %>
+</title>
 
 <body>
-	<form id='details' method='GET' action='/edit'>
-		<input type="hidden" name="_id" value=<%= r._id %>><br>
-		Name: <input type="text" name="name" value=<%= r.name %>><br>
-		Borough: <input type="text" name="borough" value=<%= r.borough %>><br>
-		Cuisine: <input type="text" name="cuisine" value=<%= r.cuisine %>><br>
-		Address:<br>
-		<input type="text" name="building" value=<%= r.address.building %>> 
-		,
-		<input type="text" name="street" value=<%= r.address.street %>><br>
-		Zipcode: <input type="text" name="street" value=<%= r.address.zipcode %>y><br>
-		Coord: <input type="text" name="street" value=<%= r.address.coord %> ><br>
-		<% if (r.grades.length > 0) { %>
-	
-		<table>
-			<tr><th>Grades</th></tr>
-			<% for (var i = 0; i < r.grades.length; i++) { %>
-				<tr>
-					<td>User: <%= r.grades[i].user%> ,Score: <%= r.grades[i].score%></td>	
-				</tr>
+	<% if (r.image != "") { %>
+	<img src='data: <%= r.mimetype %>;base64, <%= r.image%>'>
+	<%}%>
+	<p>Restaurant id:
+		<%= r.restaurant_id %><br>
+		Name:
+		<%= r.name %><br>
+		Borough:
+		<%= r.borough %><br>
+		Cuisine:
+		<%= r.cuisine %><br>
+		Building :
+		<%= r.address.building %>,
+		Street :
+		<%= r.address.street %><br>
+		Zipcode:
+		<%= r.address.zipcode %><br>
+		Coord:
+		<%= r.address.coord %>
+	</p><br>
+	<% if (r.address.coord[0] != "" && r.address.coord[1] != "") { %>
+	<form action="http://www.google.com/maps/place/<%= r.address.coord[0] %>,<%= r.address.coord[1] %>">
+		<input type="submit" value="Go to Google map" />
+	</form>
+	<%}%>
 
-			<% } %>
-		</table>
-		
-		<% } else { %>
-			<h1>Nothing to Show!</h1>
+	Owner :
+	<%= r.owner %><br>
+	<% if (r.grades.length > 0) { %>
+
+	<table>
+		<tr>
+			<th>Grades</th>
+		</tr>
+		<% for (var i = 0; i < r.grades.length; i++) { %>
+		<tr>
+			<td>User:
+				<%= r.grades[i].user%> ,Score:
+				<%= r.grades[i].score%>
+			</td>
+		</tr>
+
 		<% } %>
-		
+	</table>
+
+	<% } else { %>
+	<h1>Nothing to Show!</h1>
+	<% } %>
+
+	<br>
+
+	<form action="/updateForm" method="POST">
+		<input type="hidden" name="_id" value="<%=r._id%>">
+		<input type="hidden" name="owner" value="<%=r.owner%>">
+		<input type="hidden" name="restaurant_id" value="<%=r.restaurant_id%>">
+		<input type="hidden" name="name" value="<%=r.name%>">
+		<input type="hidden" name="borough" value="<%=r.borough%>">
+		<input type="hidden" name="cuisine" value="<%=r.cuisine%>">
+		<input type="hidden" name="building" value="<%=r.address.building%>">
+		<input type="hidden" name="street" value="<%=r.address.street%>">
+		<input type="hidden" name="zipcode" value="<%=r.address.zipcode%>">
+		<input type="hidden" name="coordx" value="<%=r.address.coord[0]%>">
+		<input type="hidden" name="coordy" value="<%=r.address.coord[1]%>">
+		<input type="submit" value="update" />
+	</form>
+	<form action="/delete">
+		<input type="submit" value="delete" />
+	</form>
+	<form action="/rate">
+		<input type="submit" value="rate" />
 	</form>
 
-	<form action="http://www.google.com/maps/place/<%= r.address.coord[0] %>,<%= r.address.coord[1] %>">
-   			 <input type="submit" value="Go to Google map" />
-	</form><br>
 
-<script>
-	function goBack() {window.history.back();}
-</script>
-
-<button onclick="goBack()">Go Back</button>
-
-<form action="/update">
-	<input type="hidden" name="_id" value="<%=r._id%>">
-	<input type="hidden" name="owner" value="<%=r.owner%>">
-    <input type="submit" value="update"/>
-</form>
-<form action="/delete">
-    <input type="submit" value="delete"/>
-</form>
-<form action="/rate">
-    <input type="submit" value="rate"/>
-</form>
-
+	<button onclick="goBack()">Go Back</button>
 
 </body>
+
+<script>
+		function goBack() {window.history.back();}
+</script>
+
 </html>
