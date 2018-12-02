@@ -62,6 +62,39 @@ app.get('/index', function (req, res) {
 
 }); // index
 
+function read_n_print(res, criteria, max) {
+	MongoClient.connect(mongourl, function (err, db) {
+		assert.equal(err, null);
+		console.log('Connected to MongoDB\n');
+		findRestaurants(db, criteria, max, function (restaurants) {
+			db.close();
+			console.log('Disconnected MongoDB\n');
+			res.render('index', {
+				r: restaurants
+			});
+			//return(restaurants);
+		});
+	});
+} //Print index
+
+
+function findRestaurants(db, criteria, max, callback) {
+	var restaurants = [];
+	if (max > 0) {
+		cursor = db.collection('restaurant').find(criteria).limit(max);
+	} else {
+		cursor = db.collection('restaurant').find(criteria);
+	}
+	cursor.each(function (err, doc) {
+		assert.equal(err, null);
+		if (doc != null) {
+			restaurants.push(doc);
+		} else {
+			callback(restaurants);
+		}
+	});
+} //Find restarurnt for read_n_print
+
 
 
 app.get('*', function (req, res) {
