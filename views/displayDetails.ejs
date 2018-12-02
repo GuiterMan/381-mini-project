@@ -50,7 +50,7 @@
 	</table>
 
 	<% } else { %>
-	<h1>Nothing to Show!</h1>
+	<h1>No grading records.</h1>
 	<% } %>
 
 	<br>
@@ -70,9 +70,11 @@
 		<input type="submit" value="update" />
 	</form>
 	<form action="/delete">
+		<input type="hidden" name="_id" value="<%=r._id%>">
 		<input type="submit" value="delete" />
 	</form>
 	<form action="/rate">
+		<input type="hidden" name="_id" value="<%=r._id%>">
 		<input type="submit" value="rate" />
 	</form>
 

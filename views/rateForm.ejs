@@ -2,8 +2,8 @@
 
 <body>
 	<h3>Update Form</h3>
-	<form id='details' method='POST' action='/rate' enctype="multipart/form-data">
-		
+	<form id='details' method='POST' action='/rate'>
+		<input type="hidden" name="_id" value="<%=_id%>">		
 		score(0 - 10) : <input type="text" name="score"><br>
 		
 		<input type="submit" value="Rate"/>
