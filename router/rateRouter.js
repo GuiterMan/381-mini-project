@@ -22,21 +22,30 @@ router.post('/rate', function (req, res) {
         user: req.session.userid,
         score: req.body.score
     };
-    rate(criteria, grade, function (result, db) {
-        db.close();
-        console.log('Disconnected from MongoDB\n');
-        if (result.resultCodeByBen == 1) {
-            console.log("rated");
-            res.redirect("/");
-        } else {
-            title = "Rate failed.";
-            msg = "You have already rated this restaurant <br><a href='/index'>Go back</a>";
-            res.render('blankPage', {
-                title: title,
-                msg: msg
-            });
-        }
-    });
+    if (req.body.score > 0 && req.body.score <= 10) {
+        rate(criteria, grade, function (result, db) {
+            db.close();
+            console.log('Disconnected from MongoDB\n');
+            if (result.resultCodeByBen == 1) {
+                console.log("rated");
+                res.redirect("/");
+            } else {
+                title = "Rate failed.";
+                msg = "You have already rated this restaurant <br><a href='/index'>Go back</a>";
+                res.render('blankPage', {
+                    title: title,
+                    msg: msg
+                });
+            }
+        });
+    } else {
+        title = "Rate failed.";
+        msg = "Score must between 1 and 10 <br><a href='/index'>Go back</a>";
+        res.render('blankPage', {
+            title: title,
+            msg: msg
+        });
+    }
 }); // Rate Function
 
 //--------------------------------------------------------------------------------------------------------------------------
@@ -46,9 +55,9 @@ function rate(criteria, grade, callback) {
     findOneRestuarant(criteria._id, function (result, db) {
         var ratedUser = result.grades;
         var rated = false;
-        ratedUser.forEach(function(element){
-            if(element.user==criteria.user){
-                rated=true;
+        ratedUser.forEach(function (element) {
+            if (element.user == criteria.user) {
+                rated = true;
             }
         });
         if (!rated) {

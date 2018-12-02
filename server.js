@@ -27,7 +27,6 @@ app.set('view engine', 'ejs');
 
 var loginedUser;
 var displayid = "";
-var rateuser = [];
 
 app.use(session({
 	name: 'session',
@@ -140,58 +139,6 @@ app.get('/delete', function (req, res) {
 
 }); // Delete Function
 
-// app.get('/rate', function (req, res) {
-// 	res.render('rateForm', {});
-// }); // Rate Restaurant Form
-
-// app.post('/rate', function (req, res) {
-// 	console.log('Incoming request: post %s', req.path);
-// 	console.log("pass successful");
-
-// 	var criteria = {};
-// 	var new_r = {}; // document to be inserted
-// 	var form = new formidable.IncomingForm();
-// 	form.parse(req, function (err, fields, files) {
-// 		if (fields.score) {
-// 			new_r.score = fields.score;
-// 		}
-// 	});
-// 	new_r._id = displayid;
-// 	criteria = new_r;
-
-// 	var rateEx = true;
-
-// 	for (var i = 0; i < rateuser.length; i++) {
-
-// 		if (loginedUser == rateuser[i]) {
-// 			console.log("You have already rated");
-// 			rateEx = false;
-// 			break;
-// 		}
-// 	}
-// 	if (rateEx) {
-// 		if (new_r.score < 0 || new_r.score > 10) {
-// 			console.log("Score must between 1 - 10");
-// 		} else {
-// 			rate(res, criteria, req);
-
-// 		}
-// 	}
-// 	res.redirect('/index');
-// 	/*
-// 		if (new_r.score < 0 || new_r.score > 10) {
-// 			console.log("Score must between 1 - 10");
-// 			res.redirect('/index');
-// 		} else if (req.session.nVisit > 1) { 
-// 			console.log("You have rate before!");
-// 			res.redirect('/index');
-// 		} else {
-// 			rate(res,criteria,req);
-// 	    	res.redirect('/index');
-// 	    };
-// 	*/
-// }); // Rate Function
-
 
 function read_n_print(res, criteria, max) {
 	MongoClient.connect(mongourl, function (err, db) {
@@ -247,64 +194,6 @@ function deleteRestaurant(db, criteria, callback) {
 		callback(result);
 	});
 } //Function to Update Restaurant
-
-// function rate(res, queryAsObject, req) {
-// 	console.log('About to update ' + JSON.stringify(queryAsObject));
-// 	MongoClient.connect(mongourl, function (err, db) {
-// 		assert.equal(err, null);
-// 		console.log('Connected to MongoDB\n');
-// 		var criteria = {};
-// 		criteria['_id'] = ObjectId(queryAsObject._id);
-// 		var newValues = {};
-// 		/*
-// 		for (key in queryAsObject) {
-// 			if (key != "_id") {
-// 				newValues[key] = queryAsObject[key];				
-// 			}
-// 		}
-// 		*/
-// 		var address = {};
-// 		for (key in queryAsObject) {
-// 			if (key == "_id") {
-// 				continue;
-// 			}
-// 			switch (key) {
-// 				case 'building':
-// 				case 'street':
-// 				case 'zipcode':
-// 					address[key] = queryAsObject[key];
-// 					break;
-// 				default:
-// 					newValues[key] = queryAsObject[key];
-// 			}
-// 		}
-// 		if (address.lenght > 0) {
-// 			newValues['address'] = address;
-// 		}
-// 		newValues['user'] = loginedUser;
-
-// 		console.log('Preparing update: ' + JSON.stringify(newValues));
-// 		rateRestaurant(db, criteria, newValues, function (result) {
-// 			db.close();
-// 			console.log("rate was successful!");
-// 		});
-// 	});
-// } //Rate Restaurant
-
-// function rateRestaurant(db, criteria, newValues, callback) {
-// 	db.collection('restaurant').update(
-// 		criteria, {
-// 			$push: {
-// 				grades: newValues
-// 			}
-// 		},
-// 		function (err, result) {
-// 			assert.equal(err, null);
-// 			console.log("Rate was successfully");
-// 			callback(result);
-// 		});
-// } //Function to Rate Restaurant
-
 
 app.get('*', function (req, res) {
 	res.set({

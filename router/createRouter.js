@@ -23,10 +23,7 @@ router.post('/create', function (req, res) {
                 fields.coordy
             ]
         };
-        grades = [{
-            "user": fields.user,
-            "score": fields.score
-        }];
+        grades = [];
         new_r.restaurant_id = fields.restaurant_id;
         new_r.name = fields.name;
         new_r.address = address;
