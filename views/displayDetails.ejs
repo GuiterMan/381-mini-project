@@ -71,6 +71,7 @@
 	</form>
 	<form action="/delete">
 		<input type="hidden" name="_id" value="<%=r._id%>">
+		<input type="hidden" name="owner" value="<%=r.owner%>">
 		<input type="submit" value="delete" />
 	</form>
 	<form action="/rate">

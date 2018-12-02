@@ -13,6 +13,9 @@ var createRouter = require('./router/createRouter.js');
 var updateRouter = require('./router/updateRouter.js');
 var displayRouter = require('./router/displayRouter.js');
 var rateRouter = require('./router/rateRouter.js');
+var searchRouter = require('./router/searchRouter.js');
+var deleteRouter = require('./router/deleteRouter.js');
+
 
 
 var app = express();
@@ -48,6 +51,8 @@ app.use(createRouter);
 app.use(updateRouter);
 app.use(displayRouter);
 app.use(rateRouter);
+app.use(searchRouter);
+app.use(deleteRouter);
 
 app.get('/', function (req, res) {
 	res.redirect('/index');
@@ -58,82 +63,6 @@ app.get('/index', function (req, res) {
 	read_n_print(res, {}, 10);
 
 }); // index
-
-
-app.get('/search', function (req, res) {
-	res.render('searchForm', {});
-}); // Search Restaurant Form
-
-app.post('/search', function (req, res) {
-	console.log('Incoming request: post %s', req.path);
-	console.log("pass successful");
-
-	var criteria = {};
-	var new_r = {}; // document to be inserted
-	var form = new formidable.IncomingForm();
-	form.parse(req, function (err, fields, files) {
-
-		if (fields.restaurant_id) {
-			new_r.restaurant_id = fields.restaurant_id;
-		}
-		if (fields.name) {
-			new_r.name = fields.name;
-		}
-		if (fields.borough) {
-			new_r.borough = fields.borough;
-		}
-		if (fields.cuisine) {
-			new_r.cuisine = fields.cuisine;
-		}
-		if (fields.building) {
-			new_r.building = fields.building;
-		}
-		if (fields.coordx) {
-			new_r.coordx = fields.coordx;
-		}
-		if (fields.coordy) {
-			new_r.coordy = fields.coordy;
-		}
-		if (fields.street) {
-			new_r.street = fields.street;
-		}
-		if (fields.zipcode) {
-			new_r.zipcode = fields.zipcode;
-		}
-
-	});
-	criteria = new_r;
-
-	//console.log('/search criteria = ' + JSON.stringify(new_r));
-
-	read_n_print(res, criteria, 0);
-}); // Search Function
-
-
-app.get('/delete', function (req, res,next) {
-	console.log('Incoming request: post %s', req.path);
-	console.log("pass successful");
-	console.log("req is:");
-	console.log(req.query._id);
-	var criteria = {};
-	var new_r = {}; // document to be inserted
-
-	new_r._id = displayid;
-	criteria = new_r;
-
-
-	//console.log('/search criteria = ' + JSON.stringify(new_r));
-	if (new_r['owner'] == loginedUser) {
-		remove(res, {_id: req.query._id});
-		res.redirect('/index');
-	} else {
-		//res.redirect('/notFound');
-		console.log("You are not owner!");
-		next();
-		res.redirect('/');
-	}
-
-}); // Delete Function
 
 
 function read_n_print(res, criteria, max) {
@@ -169,27 +98,6 @@ function findRestaurants(db, criteria, max, callback) {
 	});
 } //Find restarurnt for read_n_print
 
-function remove(res, criteria) {
-	console.log('About to delete ' + JSON.stringify(criteria));
-	MongoClient.connect(mongourl, function (err, db) {
-		assert.equal(err, null);
-		console.log('Connected to MongoDB\n');
-		deleteRestaurant(db, criteria, function (result) {
-			db.close();
-			console.log(JSON.stringify(result));
-			console.log("delete was successful!");
-		});
-	});
-} //delete restaurant
-
-function deleteRestaurant(db, criteria, callback) {
-	criteria['_id'] = ObjectId(criteria._id);
-	db.collection('restaurant').deleteMany(criteria, function (err, result) {
-		assert.equal(err, null);
-		console.log("Delete was successfully");
-		callback(result);
-	});
-} //Function to Update Restaurant
 
 app.get('*', function (req, res) {
 	res.set({
