@@ -32,33 +32,6 @@ router.post('/search', function (req, res) {
             new_r.cuisine = fields.cuisine;
         }
 
-        var address = {};
-
-        if (fields.building) {
-            address.building = fields.building;
-        }
-       
-        if (fields.street) {
-            address.street = fields.street;
-        }
-        if (fields.zipcode) {
-            address.zipcode = fields.zipcode;
-        }
-
-        if (fields.coordx && fields.coordy) {
-            var coordxy = [];
-            coordxy.push(fields.coordx);
-            coordxy.push(fields.coordy);
-            console.log(coordxy);
-            address.coord = coordxy;
-        }
-
-        for(var key in address) {
-            if (address.hasOwnProperty(key))
-             new_r.address = address;
-             break;   
-        }
-
         criteria = new_r;
 
         console.log('/search criteria = ' + JSON.stringify(criteria));

@@ -13,12 +13,13 @@ router.get('/delete', function (req, res,next) {
     console.log(req.session.userid);
     console.log(req.query.owner);
     if (req.session.userid == req.query.owner) {
-        remove(res, {_id: req.query._id});
+        remove({_id: req.query._id}, function(result,db){
+        db.close();
+        console.log('Disconnected from MongoDB\n');
         res.redirect('/');
-    } else {
+});    } else {
         //res.redirect('/notFound');
         console.log("You are not owner!");
-        next();
         res.redirect('/');
     }
 
@@ -27,6 +28,24 @@ router.get('/delete', function (req, res,next) {
 //--------------------------------------------------------------------------------------------------------------------------
 // Functions
 
+
+function remove(criteria, callback) {
+    console.log('About to delete ' + JSON.stringify(criteria));
+    MongoClient.connect(mongourl, function (err, db) {
+        assert.equal(err, null);
+        console.log('Connected to MongoDB\n');
+        criteria['_id'] = ObjectId(criteria._id);
+        db.collection('restaurant').deleteMany(criteria, function (err, result) {
+            assert.equal(err, null);
+            console.log("Delete was successfully");
+            callback(result,db);
+        });
+    });
+} //delete restaurant
+
+
+
+/*
 function remove(res, criteria) {
     console.log('About to delete ' + JSON.stringify(criteria));
     MongoClient.connect(mongourl, function (err, db) {
@@ -40,6 +59,8 @@ function remove(res, criteria) {
     });
 } //delete restaurant
 
+
+
 function deleteRestaurant(db, criteria, callback) {
     criteria['_id'] = ObjectId(criteria._id);
     db.collection('restaurant').deleteMany(criteria, function (err, result) {
@@ -48,6 +69,6 @@ function deleteRestaurant(db, criteria, callback) {
         callback(result);
     });
 } //Function to Update Restaurant
-
+*/
 
 module.exports = router;
