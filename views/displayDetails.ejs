@@ -4,7 +4,7 @@
 </title>
 
 <body>
-	<% if (r.image != "") { %>
+	<% if (r.image != "" && (r.mimetype == "image/jpeg" || r.mimetype == "image/png")) { %>
 	<img src='data: <%= r.mimetype %>;base64, <%= r.image%>'>
 	<%}%>
 	<p>Restaurant id:
