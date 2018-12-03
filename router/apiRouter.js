@@ -16,7 +16,23 @@ router.post('/restaurant/', function (req, res) {
     MongoClient.connect(mongourl, function (err, db) {
         if (err) throw err;
         console.log('Connected to MongoDB\n');
-        console.log(insertData);
+        var address = {
+            "building": "",
+            "street": "",
+            "zipcode": "",
+            "coord": ["",
+                ""
+            ]
+        };
+        var grades = [];       
+        insertData.restaurant_id = "";
+        insertData.borough = "";
+        insertData.cuisine = "";
+        insertData.address = address;
+        insertData.grades = grades;
+        insertData.mimetype = "";
+        insertData.image = "";
+        
         if (insertData.hasOwnProperty("name") && insertData.hasOwnProperty("owner")) {
             db.collection('restaurant').insertOne(insertData, function (err, result) {
                 if (err) throw err;
@@ -63,7 +79,7 @@ router.get('/restaurant/read/:key/:value', function (req, res) {
         var criteria = {
             [key]: req.params.value
         };
-        read(criteria, function (result,db) {
+        read(criteria, function (result, db) {
             res.writeHead(200, {
                 "Content-Type": "application/json"
             });
@@ -91,7 +107,7 @@ function read(criteria, callback) {
             if (result != null) {
                 resultArray.push(result);
             } else {
-                callback(resultArray,db);
+                callback(resultArray, db);
             }
         });
     });
