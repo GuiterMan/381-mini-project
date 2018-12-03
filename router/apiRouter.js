@@ -10,7 +10,7 @@ Method: POST
 Params: {JSON} Restaurant object
 Return: {JSON} returning status and object id for successful insert
 */
-router.post('/restaurant/create', function (req, res) {
+router.post('/restaurant/', function (req, res) {
     var insertData = req.body;
     var msg = {};
     MongoClient.connect(mongourl, function (err, db) {
